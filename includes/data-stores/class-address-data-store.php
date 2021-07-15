@@ -72,16 +72,24 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
 
         $fields = ['user_id', 'first_name', 'last_name', 'title', 'phone', 'lat', 'lng', 'address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone'];
 
-		$data = $wpdb->get_row( $wpdb->prepare( "SELECT %s FROM {$wpdb->prefix}woocam_addresses WHERE ID = %d LIMIT 1;", implode(',', $fields), $address->get_id() ) );
+		$data = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT ". implode(', ', $fields) ." FROM {$wpdb->prefix}woocam_addresses WHERE ID = %d LIMIT 1;",
+                $address->get_id()
+            )
+        );
 
 		if ( ! $data ) {
 			throw new Exception( __( 'Invalid order item.', 'woocommerce' ) );
 		}
 
 		$address->set_props(
-            array_map(function($field) use($data) {
-                return $data->$field;
-            }, $fields)
+            array_combine(
+                $fields,
+                array_map(function($field) use($data) {
+                    return $data->$field;
+                }, $fields)
+            )
 		);
         $address->set_object_read( true );
 	}
@@ -152,6 +160,10 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
 	 * @return \Dornaweb\WOOCAM\Address
 	 */
 	private function get_address( $data ) {
+        if ($data->ID) {
+            $data->id = $data->ID;
+        }
+
 		return new \Dornaweb\WOOCAM\Address( $data );
 	}
 

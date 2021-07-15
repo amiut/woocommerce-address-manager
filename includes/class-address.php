@@ -64,7 +64,6 @@ class Address extends Data
 	 */
 	protected $object_type = 'address';
 
-
 	/**
 	 * Constructor.
 	 *
@@ -77,14 +76,22 @@ class Address extends Data
 			$this->set_id( $address->get_id() );
 		} elseif ( is_numeric( $address ) && $address > 0 ) {
 			$this->set_id( $address );
-		} else {
-			$this->set_object_read( true );
-		}
+		} elseif ( ! empty( $address->ID ) ) {
+			$this->set_id( absint( $address->ID ) );
+        }
 
 		$this->data_store = Data_Store::load( 'address' );
 
-		if ( $this->get_id() > 0 ) {
-			$this->data_store->read( $this );
+		// If we have an ID, load the address from the DB.
+		if ( $this->get_id() ) {
+			try {
+				$this->data_store->read( $this );
+			} catch ( Exception $e ) {
+				$this->set_id( 0 );
+				$this->set_object_read( true );
+			}
+		} else {
+			$this->set_object_read( true );
 		}
 	}
 
