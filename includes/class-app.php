@@ -58,17 +58,6 @@ final class App
         $this->define_constants();
         $this->includes();
         $this->init();
-
-        // Test Create Address
-        // $address = woocam_add_address([
-        //     'user_id' => 1,
-        //     'first_name' => 'Amin',
-        //     'last_name' => 'Amin',
-        //     'lat' => '1.1231',
-        //     'lng'   => '123.132'
-        // ]);
-
-        var_dump(woocam_get_addresses());
     }
 
     /**
