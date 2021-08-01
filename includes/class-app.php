@@ -58,6 +58,11 @@ final class App
         $this->define_constants();
         $this->includes();
         $this->init();
+      $this->init_hooks();
+    }
+
+    public function init_hooks() {
+        add_action( 'init', array( $this, 'load_rest_api' ) );
     }
 
     /**
@@ -121,12 +126,19 @@ final class App
         add_action('wp_enqueue_scripts', [$this, 'public_dependencies']);
 
         // Initiate Required classes
-        // $this->api = new API\REST_Controller;    
+        // $this->api = new API\REST_Controller;
     }
 
     /**
      * Register scripts and styles for public area
      */
     public function public_dependencies() {
+    }
+
+    /**
+     * Load REST api
+     */
+    public function load_rest_api() {
+        \Dornaweb\WOOCAM\Rest_API\Server::instance()->init();
     }
 }
