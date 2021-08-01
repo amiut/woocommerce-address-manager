@@ -696,7 +696,7 @@ abstract class Data
 				if ( is_callable( array( $this, $setter ) ) ) {
 					$this->{$setter}( $value );
 				}
-			} catch ( Woocam_Data_Exception $e ) {
+			} catch ( Data_Exception $e ) {
 				if ( ! $errors ) {
 					$errors = new WP_Error();
 				}
@@ -783,11 +783,11 @@ abstract class Data
 
 		return $value;
 	}
-    
+
 	/**
 	 * When invalid data is found, throw an exception unless reading from the DB.
 	 *
-	 * @throws Woocam_Data_Exception Data Exception.
+	 * @throws Data_Exception Data Exception.
 	 * @since 3.0.0
 	 * @param string $code             Error code.
 	 * @param string $message          Error message.
@@ -795,6 +795,6 @@ abstract class Data
 	 * @param array  $data             Extra error data.
 	 */
 	protected function error( $code, $message, $http_status_code = 400, $data = array() ) {
-		throw new Woocam_Data_Exception( $code, $message, $http_status_code, $data );
+		throw new Data_Exception( $code, $message, $http_status_code, $data );
 	}
 }

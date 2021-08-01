@@ -169,7 +169,7 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
 
     /**
      * Query addresses
-     * 
+     *
      * @param array $args
      */
     public function get_addresses($args = []) {

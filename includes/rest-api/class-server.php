@@ -64,7 +64,8 @@ class Server {
 	 */
 	protected function get_v1_controllers() {
 		return array(
-            'address' => '\Dornaweb\WOOCAM\Rest_API\Controllers\V1\Addresses_REST_Controller',
+            'addresses' => '\Dornaweb\WOOCAM\Rest_API\Controllers\V1\Addresses_REST_Controller',
+            'address-helper' => '\Dornaweb\WOOCAM\Rest_API\Controllers\V1\Address_Helper_REST_Controller',
 		);
 	}
 

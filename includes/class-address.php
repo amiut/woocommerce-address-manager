@@ -115,7 +115,7 @@ class Address extends Data
 	}
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -124,7 +124,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -133,7 +133,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -142,7 +142,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -151,7 +151,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -160,7 +160,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -169,7 +169,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -178,7 +178,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -187,7 +187,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -196,16 +196,16 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
     public function get_address2($context = 'view') {
         return $this->get_prop('address2', $context);
     }
-    
+
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -214,7 +214,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -223,7 +223,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -232,7 +232,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -241,7 +241,7 @@ class Address extends Data
     }
 
     /**
-     * 
+     *
      * @param string $context View or Edit context
      * @return
      */
@@ -251,7 +251,7 @@ class Address extends Data
 
     /**
      * Set user id
-     * 
+     *
      * @param int $user_id
      */
     public function set_user_id($user_id = 0) {
@@ -260,7 +260,7 @@ class Address extends Data
 
     /**
      * Set user id
-     * 
+     *
      * @param string $title
      */
     public function set_title($title = '') {
@@ -269,7 +269,7 @@ class Address extends Data
 
     /**
      * Set user id
-     * 
+     *
      * @param string $first_name
      */
     public function set_first_name($first_name = '') {
@@ -278,10 +278,91 @@ class Address extends Data
 
     /**
      * Set user id
-     * 
+     *
      * @param string $last_name
      */
     public function set_last_name($last_name = '') {
         $this->set_prop( 'last_name', $last_name );
+    }
+
+    /**
+     * Set lat
+     *
+     * @param string $lat
+     */
+    public function set_lat($lat = '') {
+        $this->set_prop( 'lat', $lat );
+    }
+
+    /**
+     * Set lng
+     *
+     * @param string $lng
+     */
+    public function set_lng($lng = '') {
+        $this->set_prop( 'lng', $lng );
+    }
+
+    /**
+     * Set address1
+     *
+     * @param string $address1
+     */
+    public function set_address1($address1 = '') {
+        $this->set_prop( 'address1', $address1 );
+    }
+
+    /**
+     * Set address2
+     *
+     * @param string $address2
+     */
+    public function set_address2($address2 = '') {
+        $this->set_prop( 'address2', $address2 );
+    }
+
+    /**
+     * Set city
+     *
+     * @param string $city
+     */
+    public function set_city($city = '') {
+        $this->set_prop( 'city', $city );
+    }
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     */
+    public function set_state($state = '') {
+        $this->set_prop( 'state', $state );
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     */
+    public function set_country($country = '') {
+        $this->set_prop( 'country', $country );
+    }
+
+    /**
+     * Set postcode
+     *
+     * @param string $postcode
+     */
+    public function set_postcode($postcode = '') {
+        $this->set_prop( 'postcode', $postcode );
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     */
+    public function set_phone($phone = '') {
+        $this->set_prop( 'phone', $phone );
     }
 }
