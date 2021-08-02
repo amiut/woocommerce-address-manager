@@ -66,6 +66,7 @@ class Server {
 		return array(
             'addresses' => '\Dornaweb\WOOCAM\Rest_API\Controllers\V1\Addresses_REST_Controller',
             'address-helper' => '\Dornaweb\WOOCAM\Rest_API\Controllers\V1\Address_Helper_REST_Controller',
+            'shipping-helper' => '\Dornaweb\WOOCAM\Rest_API\Controllers\V1\Shipping_Helper_REST_Controller',
 		);
 	}
 

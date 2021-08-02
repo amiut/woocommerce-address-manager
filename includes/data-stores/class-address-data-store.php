@@ -53,6 +53,7 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
         );
 
         $address_id = absint( $wpdb->insert_id );
+        $address->set_id($address_id);
 		return $address_id;
     }
 
@@ -134,7 +135,6 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
 		$address->apply_changes();
     }
 
-
 	/**
 	 * Remove an address from the database.
 	 *
@@ -147,7 +147,7 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
 		$wpdb->delete(
 			$wpdb->prefix . 'woocam_addresses',
 			array(
-				'webhook_id' => $address->get_id(),
+				'ID' => $address->get_id(),
 			),
 			array( '%d' )
 		); // WPCS: cache ok, DB call ok.

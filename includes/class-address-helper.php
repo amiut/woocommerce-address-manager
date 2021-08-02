@@ -30,6 +30,27 @@ class Address_Helper
         return $addresses;
     }
 
+    public static function get_user_address($user_id = 0, $address_id) {
+        if (!$user_id) {
+            if (!is_user_logged_in()) throw new Data_Exception("get_user_addresses_not_loggedin", __('You must be logged in', 'woocam'), 400);
+            $user_id = get_current_user_id();
+        }
+
+        $data_store = Data_Store::load('address');
+
+        $addresses = $data_store->get_addresses([
+            'user_id'   => absint($user_id),
+        ]);
+
+        foreach ($addresses as $address) {
+            if ($address->get_id() === $address_id) {
+                return $address;
+            }
+        }
+
+        return false;
+    }
+
     public static function add_user_address($user_id, $data = []) {
         $data = wp_parse_args(
             $data,
@@ -75,7 +96,20 @@ class Address_Helper
     }
 
     public static function format_address_for_REST($address) {
+        $formatted_address = apply_filters(
+            'woocam_format_address',
+            sprintf(
+                '%1$s%2$s%3$s%4$s',
+                ($address->get_state() ? $address->get_state_label() . ", " : ""),
+                ($address->get_city() ? $address->get_city() . ", " : ""),
+                $address->get_address1(),
+                ($address->get_address2() ? ", " . $address->get_address2() : ""),
+            ),
+            $address
+        );
+
         return [
+            'id'            => $address->get_id(),
             'title'         => $address->get_title(),
             'user_id'       => $address->get_user_id(),
             'is_default'    => $address->is_default(),
@@ -87,10 +121,12 @@ class Address_Helper
             'address1'      => $address->get_address1(),
             'address2'      => $address->get_address2(),
             'city'          => $address->get_city(),
-            'state'         => $address->get_state(),
+            'state_code'    => $address->get_state(),
+            'state'         => $address->get_state_label(),
             'country'       => $address->get_country(),
             'postcode'      => $address->get_postcode(),
             'phone'         => $address->get_phone(),
+            'formatted_address' => $formatted_address
         ];
     }
 }

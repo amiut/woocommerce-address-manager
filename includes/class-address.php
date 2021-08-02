@@ -224,6 +224,18 @@ class Address extends Data
 
     /**
      *
+     * @return
+     */
+    public function get_state_label() {
+        $country = !empty($this->get_country()) ? $this->get_country() : WC()->countries->get_base_country();
+
+        $states = WC()->countries->get_states($country);
+
+        return is_array($states) && !empty($states[$this->get_state()]) ? $states[$this->get_state()] : '';
+    }
+
+    /**
+     *
      * @param string $context View or Edit context
      * @return
      */

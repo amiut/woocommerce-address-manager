@@ -20,7 +20,9 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
      */
     public $path = 'addresses';
 
-    public $methods = ['get', 'post'];
+    public $methods = ['GET', 'POST'];
+
+    public $one_methods = ["DELETE"];
 
     /**
      * Get Current user Addresses
@@ -29,6 +31,45 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
         global $current_user;
 
         $addresses = Address_Helper::get_user_addresses($current_user->ID);
+        wp_send_json_success([
+            'addresses' => array_map(['\\Dornaweb\\WOOCAM\\Address_Helper', 'format_address_for_REST'], $addresses)
+        ]);
+    }
+
+    /**
+     * Get Current user Addresses
+     */
+    public function delete_one($request) {
+        try {
+            global $current_user;
+
+            $address_id = absint($request->get_param('id'));
+
+            $address = Address_Helper::get_user_address($current_user->ID, $address_id);
+
+            if (!$address) {
+                throw new REST_Exception("delete_address_address_not_found", __('Address Not found', 'woocam'), 400);
+            }
+
+            $address->delete(true);
+            wp_send_json_success([
+                'message'   => __("Address removed", "woocam")
+            ]);
+        } catch (REST_Exception $e) {
+            wp_send_json_error([
+                'message' => $e->getMessage(),
+                'where'   => $e->getErrorData('where')
+            ], $e->getCode());
+
+        } catch (Data_Exception $e) {
+            wp_send_json_error([
+                'message' => $e->getMessage(),
+                'where'   => $e->getErrorData('where')
+            ], $e->getCode());
+
+        }
+
+
         wp_send_json_success([
             'addresses' => array_map(['\\Dornaweb\\WOOCAM\\Address_Helper', 'format_address_for_REST'], $addresses)
         ]);
@@ -144,8 +185,11 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
         }
     }
 
-
     public function permission_get() {
+        return is_user_logged_in();
+    }
+
+    public function permission_delete_one() {
         return is_user_logged_in();
     }
 
