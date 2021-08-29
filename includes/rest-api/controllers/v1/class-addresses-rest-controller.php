@@ -22,7 +22,7 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
 
     public $methods = ['GET', 'POST'];
 
-    public $one_methods = ["DELETE"];
+    public $one_methods = ["DELETE", "PATCH"];
 
     /**
      * Get Current user Addresses
@@ -96,73 +96,8 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
         ];
 
         try {
-
             foreach ($fields as $key => $field) {
-                switch ($key) {
-                    case 'phone':
-                        if (!trim($request->get_param('phone'))) {
-                            throw new REST_Exception("add_user_address_phone_not_entered", __('Please enter recipient\'s phone number', 'woocam'), 400, ['where' => 'phone']);
-                        }
-
-                        if (!ctype_digit($request->get_param('phone')) || strlen($request->get_param('phone')) !== 11) {
-                            throw new REST_Exception("add_user_address_phone_not_valid", __('recipient\'s phone number is not valid', 'woocam'), 400, ['where' => 'phone']);
-                        }
-
-                        $fields[$key] = $request->get_param($key);
-                        break;
-
-
-                    case 'first_name':
-                    case 'last_name':
-                        if (!trim($request->get_param('first_name'))) {
-                            throw new REST_Exception("add_user_address_first_name_not_entered", __('Please enter recipient\'s name', 'woocam'), 400, ['where' => 'first_name']);
-                        }
-
-                        if (!trim($request->get_param('last_name'))) {
-                            throw new REST_Exception("add_user_address_last_name_not_entered", __('Please enter recipient\'s last name', 'woocam'), 400, ['where' => 'last_name']);
-                        }
-
-                        if (strlen(trim($request->get_param('first_name'))) < 2) {
-                            throw new REST_Exception("add_user_address_first_name_not_valid", __('Please enter a valid recipient\'s name', 'woocam'), 400, ['where' => 'first_name']);
-                        }
-
-                        if (strlen(trim($request->get_param('last_name'))) < 2) {
-                            throw new REST_Exception("add_user_address_last_name_not_valid", __('Please enter a valid recipient\'s last name', 'woocam'), 400, ['where' => 'last_name']);
-                        }
-
-                        $fields[$key] = $request->get_param($key);
-
-                        break;
-
-                    case 'city':
-                    case 'state':
-                        if (!trim($request->get_param('state'))) {
-                            throw new REST_Exception("add_user_address_state_not_entered", __('Please enter recipient\'s state', 'woocam'), 400, ['where' => 'state']);
-                        }
-
-                        if (!trim($request->get_param('city'))) {
-                            throw new REST_Exception("add_user_address_city_not_entered", __('Please enter recipient\'s city', 'woocam'), 400, ['where' => 'city']);
-                        }
-
-                        $fields[$key] = $request->get_param($key);
-
-                        break;
-
-                    case 'postcode':
-                        if (!trim($request->get_param('postcode'))) {
-                            throw new REST_Exception("add_user_address_postcode_not_entered", __('Please enter recipient\'s postcode', 'woocam'), 400, ['where' => 'postcode']);
-                        }
-
-                        if (!ctype_digit($request->get_param('postcode')) || strlen($request->get_param('postcode')) !== 10) {
-                            throw new REST_Exception("add_user_address_postcode_not_valid", __('recipient\'s postcode is not valid', 'woocam'), 400, ['where' => 'postcode']);
-                        }
-
-                        $fields[$key] = $request->get_param($key);
-                        break;
-
-                    default:
-                        $fields[$key] = $request->get_param($key);
-                }
+                self::validate_fields($key, $fields, $request);
             }
 
             wp_send_json_success([
@@ -185,6 +120,147 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
         }
     }
 
+    public static function validate_fields($key, &$fields, $request) {
+        switch ($key) {
+            case 'phone':
+                if (!trim($request->get_param('phone'))) {
+                    throw new REST_Exception("add_user_address_phone_not_entered", __('Please enter recipient\'s phone number', 'woocam'), 400, ['where' => 'phone']);
+                }
+
+                if (!ctype_digit($request->get_param('phone')) || strlen($request->get_param('phone')) !== 11) {
+                    throw new REST_Exception("add_user_address_phone_not_valid", __('recipient\'s phone number is not valid', 'woocam'), 400, ['where' => 'phone']);
+                }
+
+                $fields[$key] = $request->get_param($key);
+                break;
+
+
+            case 'first_name':
+            case 'last_name':
+                if (!trim($request->get_param('first_name'))) {
+                    throw new REST_Exception("add_user_address_first_name_not_entered", __('Please enter recipient\'s name', 'woocam'), 400, ['where' => 'first_name']);
+                }
+
+                if (!trim($request->get_param('last_name'))) {
+                    throw new REST_Exception("add_user_address_last_name_not_entered", __('Please enter recipient\'s last name', 'woocam'), 400, ['where' => 'last_name']);
+                }
+
+                if (strlen(trim($request->get_param('first_name'))) < 2) {
+                    throw new REST_Exception("add_user_address_first_name_not_valid", __('Please enter a valid recipient\'s name', 'woocam'), 400, ['where' => 'first_name']);
+                }
+
+                if (strlen(trim($request->get_param('last_name'))) < 2) {
+                    throw new REST_Exception("add_user_address_last_name_not_valid", __('Please enter a valid recipient\'s last name', 'woocam'), 400, ['where' => 'last_name']);
+                }
+
+                $fields[$key] = $request->get_param($key);
+
+                break;
+
+            case 'city':
+            case 'state':
+                if (!trim($request->get_param('state'))) {
+                    throw new REST_Exception("add_user_address_state_not_entered", __('Please enter recipient\'s state', 'woocam'), 400, ['where' => 'state']);
+                }
+
+                if (!trim($request->get_param('city'))) {
+                    throw new REST_Exception("add_user_address_city_not_entered", __('Please enter recipient\'s city', 'woocam'), 400, ['where' => 'city']);
+                }
+
+                $fields[$key] = $request->get_param($key);
+
+                break;
+
+            case 'postcode':
+                if (!trim($request->get_param('postcode'))) {
+                    throw new REST_Exception("add_user_address_postcode_not_entered", __('Please enter recipient\'s postcode', 'woocam'), 400, ['where' => 'postcode']);
+                }
+
+                if (!ctype_digit($request->get_param('postcode')) || strlen($request->get_param('postcode')) !== 10) {
+                    throw new REST_Exception("add_user_address_postcode_not_valid", __('recipient\'s postcode is not valid', 'woocam'), 400, ['where' => 'postcode']);
+                }
+
+                $fields[$key] = $request->get_param($key);
+                break;
+
+            default:
+                $fields[$key] = $request->get_param($key);
+        }
+    }
+
+    public function patch_one($request) {
+        global $current_user;
+
+        $fields = [
+            'title'         => '',
+            'is_default'    => 0,
+            'lat'           => '',
+            'lng'           => '',
+            'first_name'    => '',
+            'last_name'     => '',
+            'company'       => '',
+            'address1'      => '',
+            'address2'      => '',
+            'city'          => '',
+            'state'         => '',
+            'country'       => WC()->countries->get_base_country(),
+            'postcode'      => '',
+            'phone'         => '',
+        ];
+
+        try {
+            $address_id = absint($request->get_param('id'));
+
+            $address = Address_Helper::get_user_address($current_user->ID, $address_id);
+
+            if (!$address) {
+                throw new REST_Exception("modify_address_address_not_found", __('Address Not found', 'woocam'), 400);
+            }
+
+            if ($request->get_param('is_default')) {
+                $addresses = Address_Helper::get_user_addresses($current_user->ID);
+
+                // is_default false for other addresses
+                foreach ($addresses as $addr) {
+                    $addr->set_is_default(false);
+                    $addr->save();
+                }
+
+                $address->set_is_default(true);
+                $address->save();
+
+                wp_send_json_success([
+                    'message'   => 'آدرس مورد نظر شما بعنوان آدرس پیشفرض انتخاب شد',
+                    'address'   => Address_Helper::format_address_for_REST($address),
+                ]);
+
+            } else {
+                foreach ($fields as $field_key => $val) {
+                    self::validate_fields($field_key, $fields);
+                }
+
+                $address->set_props($fields);
+                $address->save();
+                wp_send_json_success([
+                    'message'   => 'تغییرات ذخیره شد',
+                    'address'   => Address_Helper::format_address_for_REST($address),
+                ]);
+            }
+
+        } catch (REST_Exception $e) {
+            wp_send_json_error([
+                'message' => $e->getMessage(),
+                'where'   => $e->getErrorData('where')
+            ], $e->getCode());
+
+        } catch (Data_Exception $e) {
+            wp_send_json_error([
+                'message' => $e->getMessage(),
+                'where'   => $e->getErrorData('where')
+            ], $e->getCode());
+        }
+    }
+
     public function permission_get() {
         return is_user_logged_in();
     }
@@ -194,6 +270,10 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
     }
 
     public function permission_post() {
+        return is_user_logged_in();
+    }
+
+    public function permission_patch_one() {
         return is_user_logged_in();
     }
 }

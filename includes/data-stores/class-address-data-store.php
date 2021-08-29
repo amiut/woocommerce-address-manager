@@ -71,7 +71,7 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
 
 		$address->set_defaults();
 
-        $fields = ['user_id', 'first_name', 'last_name', 'title', 'phone', 'lat', 'lng', 'address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone'];
+        $fields = ['user_id', 'first_name', 'is_default', 'last_name', 'title', 'phone', 'lat', 'lng', 'address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone'];
 
 		$data = $wpdb->get_row(
             $wpdb->prepare(
@@ -104,7 +104,7 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
 	public function update( &$address ) {
         global $wpdb;
 
-		$changes = $webhook->get_changes();
+		$changes = $address->get_changes();
 
         $data = [
             'title'         => $address->get_title(),
@@ -184,7 +184,7 @@ class Address_Data_Store implements \Dornaweb\WOOCAM\Interfaces\Address_Data_Sto
             ]
 		);
 
-        $valid_fields       = ['ID', 'user_id', 'first_name', 'last_name', 'title', 'phone', 'lat', 'lng', 'address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone'];
+        $valid_fields       = ['ID', 'user_id', 'is_default', 'first_name', 'last_name', 'title', 'phone', 'lat', 'lng', 'address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone'];
 		$get_results_output = ARRAY_A;
 
         if ( 'ids' === $args['return'] ) {

@@ -138,7 +138,7 @@ class Address extends Data
      * @return
      */
     public function is_default($context = 'view') {
-        return $this->get_prop('is_default', $context);
+        return absint($this->get_prop('is_default', $context)) !== 0;
     }
 
     /**
@@ -376,5 +376,14 @@ class Address extends Data
      */
     public function set_phone($phone = '') {
         $this->set_prop( 'phone', $phone );
+    }
+
+    /**
+     * Set is_default
+     *
+     * @param string $is_default
+     */
+    public function set_is_default($is_default = false) {
+        $this->set_prop( 'is_default', $is_default ? 1 : 0 );
     }
 }

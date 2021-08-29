@@ -89,6 +89,13 @@ class Address_Helper
             throw new Data_Exception("add_user_address_invalid_phone", sprintf(__('Phone number is invalid', 'woocam'), $required_field), 400);
         }
 
+        // Make address as default if user doesn't have any other addresses
+        $prev_addreses = self::get_user_addresses($user_id);
+
+        if (count($prev_addreses) === 0) {
+            $data['is_default'] = 1;
+        }
+
         $address = new Address();
         $address->set_props($data);
         $address->save();
