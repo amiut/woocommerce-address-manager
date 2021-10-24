@@ -236,7 +236,7 @@ class Addresses_REST_Controller extends \Dornaweb\WOOCAM\Rest_API\REST_Controlle
 
             } else {
                 foreach ($fields as $field_key => $val) {
-                    self::validate_fields($field_key, $fields);
+                    self::validate_fields($field_key, $fields, $request);
                 }
 
                 $address->set_props($fields);
